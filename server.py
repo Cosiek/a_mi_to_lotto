@@ -20,6 +20,7 @@ def run_periodic():
 def make_app():
     return tornado.web.Application([
         (r"/", views.MainViewHandler),
+        (r"/add", views.NewUserViewHandler),
         (r"/(\w+)", views.UserViewHandler),
         ],
         template_path=join(CURRENT_DIR, "templates"),
