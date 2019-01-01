@@ -6,19 +6,17 @@ import socket
 import tornado.ioloop
 import tornado.web
 
+import views
+
 
 def run_periodic():
     print("Jup!")
 
 
-class MainHandler(tornado.web.RequestHandler):
-    def get(self):
-        self.write("Hello, world")
-
-
 def make_app():
     return tornado.web.Application([
-        (r"/", MainHandler),
+        (r"/", views.MainViewHandler),
+        (r"/(\w+)", views.UserViewHandler),
     ])
 
 
