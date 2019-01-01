@@ -1,0 +1,11 @@
+{
+	"players": [
+		{
+			"name": "Ja",
+			"file": "Ja.js",
+			"founds": 0,
+			"balance": 0
+		}
+	],
+	"history": []
+}
