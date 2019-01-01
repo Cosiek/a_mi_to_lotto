@@ -7,10 +7,10 @@ import tornado.web
 class MainViewHandler(tornado.web.RequestHandler):
 
     def get(self):
-        self.write("Hello, world")
-        
-        
+        self.render("main.html", title="Hello, world")
+
+
 class UserViewHandler(tornado.web.RequestHandler):
 
     def get(self, username):
-        self.write("Hello, " + username)
+        self.render("main.html", title="Hello, " + username)

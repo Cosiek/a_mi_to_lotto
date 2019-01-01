@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
 # encoding: utf-8
 
+from os.path import dirname, join, realpath
 import socket
 
 import tornado.ioloop
 import tornado.web
 
 import views
+
+
+CURRENT_DIR = dirname(realpath(__file__))
 
 
 def run_periodic():
@@ -17,7 +21,10 @@ def make_app():
     return tornado.web.Application([
         (r"/", views.MainViewHandler),
         (r"/(\w+)", views.UserViewHandler),
-    ])
+        ],
+        template_path=join(CURRENT_DIR, "templates"),
+        debug=True
+    )
 
 
 if __name__ == "__main__":
