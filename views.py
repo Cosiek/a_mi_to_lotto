@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # encoding: utf-8
 
+import re
+
 import tornado.web
 
 import js
@@ -48,8 +50,10 @@ class NewUserViewHandler(tornado.web.RequestHandler):
         msg = ""
         if not username:
             msg = "Nazwa gracza jest wymagana."
-        if username.lower() == "add":
+        elif username.lower() == "add":
             msg = "Nazwa \"add\" jest zastrzeżona"
+        elif re.search(r'[\.\\\/,]', username):
+            msg = 'Znaki "\\" "." "/" "," są zakazane.'
 
         if msg:
             self.errors["username"] = msg
