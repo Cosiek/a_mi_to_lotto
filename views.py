@@ -71,6 +71,7 @@ class NewUserViewHandler(tornado.web.RequestHandler):
         return not bool(msg)
 
     def save(self):
+        js.save_file(self.ctx["code"], self.ctx["username"])
         print("saving", self.ctx)
 
 
