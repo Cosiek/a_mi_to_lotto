@@ -1,3 +1,6 @@
 
 # python pre-compiled
 *.pyc
+
+# submitted files
+submitted/
