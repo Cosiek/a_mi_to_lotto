@@ -8,6 +8,7 @@ import tornado.ioloop
 import tornado.web
 
 import views
+import db
 
 
 CURRENT_DIR = dirname(realpath(__file__))
@@ -18,10 +19,16 @@ def run_periodic():
 
 
 def make_app():
+    # init DB
+    database = db.DBHandler()
+    init = {
+        "db": database
+    }
+    # instatate application
     return tornado.web.Application([
-        (r"/", views.MainViewHandler),
-        (r"/add", views.NewUserViewHandler),
-        (r"/(\w+)", views.UserViewHandler),
+        (r"/", views.MainViewHandler, init),
+        (r"/add", views.NewUserViewHandler, init),
+        (r"/(\w+)", views.UserViewHandler, init),
         ],
         template_path=join(CURRENT_DIR, "templates"),
         debug=True

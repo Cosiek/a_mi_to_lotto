@@ -10,13 +10,18 @@ import js
 
 class MainViewHandler(tornado.web.RequestHandler):
 
+    def initialize(self, db):
+        self.db = db
+
     def get(self):
         self.render("main.html", title="Hello, world")
 
 
 class NewUserViewHandler(tornado.web.RequestHandler):
 
-    def initialize(self):
+    def initialize(self, db):
+        self.db = db
+
         self.errors = {}
         self.ctx = {
             "title": "Nowy użytkownik",
@@ -71,11 +76,16 @@ class NewUserViewHandler(tornado.web.RequestHandler):
         return not bool(msg)
 
     def save(self):
-        js.save_file(self.ctx["code"], self.ctx["username"])
+        filename = js.save_file(
+                self.ctx["code"], self.ctx["username"])
+        self.db.save_player(self.ctx["username"], filename)
         print("saving", self.ctx)
 
 
 class UserViewHandler(tornado.web.RequestHandler):
+
+    def initialize(self, db):
+        self.db = db
 
     def get(self, username):
         self.render("main.html", title="Hello, " + username)
