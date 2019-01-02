@@ -36,7 +36,8 @@ class NewUserViewHandler(tornado.web.RequestHandler):
     def post(self):
         if self.validate():
             self.save()
-            self.redirect("/" + self.ctx['username'])
+            to = self.reverse_url("user", self.ctx['username'])
+            self.redirect(to)
         else:
             self.set_status(400)
             self.render("new_user.html", **self.ctx)

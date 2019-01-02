@@ -6,6 +6,7 @@ import socket
 
 import tornado.ioloop
 import tornado.web
+from tornado.web import url
 
 import views
 import db
@@ -26,9 +27,9 @@ def make_app():
     }
     # instatate application
     return tornado.web.Application([
-        (r"/", views.MainViewHandler, init),
-        (r"/add", views.NewUserViewHandler, init),
-        (r"/(\w+)", views.UserViewHandler, init),
+        url(r"/", views.MainViewHandler, init),
+        url(r"/add", views.NewUserViewHandler, init),
+        url(r"/(\w+)", views.UserViewHandler, init, name="user"),
         ],
         template_path=join(CURRENT_DIR, "templates"),
         debug=True
