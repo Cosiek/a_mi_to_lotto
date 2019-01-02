@@ -60,6 +60,8 @@ class BaseUserViewHandler(tornado.web.RequestHandler):
             msg = "Nazwa \"add\" jest zastrzeżona"
         elif re.search(r'[\.\\\/,]', username):
             msg = 'Znaki "\\" "." "/" "," są zakazane.'
+        elif self.db.get_player(username) is not None:
+            msg = 'Gracz o podanym imieniu już istnieje.'
 
         if msg:
             self.errors["username"] = msg
