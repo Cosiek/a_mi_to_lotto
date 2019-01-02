@@ -22,3 +22,9 @@ def save_file(code, filename):
     with open(filepath, 'w') as f:
         f.write(code)
     return filepath
+
+
+def get_user_code(filepath):
+    with open(filepath, 'r') as f:
+        code = f.read()
+    return code

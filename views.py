@@ -17,14 +17,14 @@ class MainViewHandler(tornado.web.RequestHandler):
         self.render("main.html", title="Hello, world")
 
 
-class NewUserViewHandler(tornado.web.RequestHandler):
+class BaseUserViewHandler(tornado.web.RequestHandler):
 
     def initialize(self, db):
         self.db = db
 
         self.errors = {}
         self.ctx = {
-            "title": "Nowy użytkownik",
+            "title": "",
             "username": "",
             "code": "",
             "errors": self.errors,
@@ -83,10 +83,27 @@ class NewUserViewHandler(tornado.web.RequestHandler):
         print("saving", self.ctx)
 
 
-class UserViewHandler(tornado.web.RequestHandler):
+class NewUserViewHandler(BaseUserViewHandler):
 
     def initialize(self, db):
-        self.db = db
+        super().initialize(db)
+        self.ctx["title"] = "Nowy gracz"
+
+
+class UserViewHandler(BaseUserViewHandler):
+
+    def initialize(self, db):
+        super().initialize(db)
+        self.ctx["title"] = "Gracz"
 
     def get(self, username):
-        self.render("main.html", title="Hello, " + username)
+        user = self.db.get_player(username)
+        if user is None:
+            self.set_status(404)
+            return
+        self.ctx["username"] = user["name"]
+        self.ctx["code"] = js.get_user_code(user["file"])
+        super().get()
+
+    def post(self, username):
+        super().post()

@@ -38,3 +38,6 @@ class DBHandler():
             "founds": 0,
             "balance": 0,
         }
+
+    def get_player(self, player_name):
+        return self.data["players"].get(player_name)
