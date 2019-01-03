@@ -14,7 +14,12 @@ class MainViewHandler(tornado.web.RequestHandler):
         self.db = db
 
     def get(self):
-        self.render("main.html", title="Hello, world")
+        ctx = {
+            "title": "Lotto",
+            "players": self.db.get_players(),
+            "history": self.db.get_history(),
+        }
+        self.render("main.html", **ctx)
 
 
 class BaseUserViewHandler(tornado.web.RequestHandler):

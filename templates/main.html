@@ -3,6 +3,13 @@
 		<title>{{ title }}</title>
 	</head>
 	<body>
-		<h1>{{ title }}</h1>
+		<h2>Gracze</h2>
+		<ol>{% for player in players %}
+			<li>{{ player["name"] }} - {{ player["founds"] }} - {{ player["balance"] }}</li>
+		{% end %}</ol>
+		<h2>Historia</h2>
+		<ol>{% for event in history %}
+			<li>{{ event }}</li>
+		{% end %}</ol>
 	</body>
 </html>

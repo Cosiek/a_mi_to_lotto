@@ -39,5 +39,11 @@ class DBHandler():
             "balance": 0,
         }
 
+    def get_players(self):
+        return self.data["players"].values()
+
+    def get_history(self):
+        return self.data["history"]
+
     def get_player(self, player_name):
         return self.data["players"].get(player_name)
