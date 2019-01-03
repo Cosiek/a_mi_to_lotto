@@ -39,8 +39,9 @@ class DBHandler():
             "balance": 0,
         }
 
-    def get_players(self):
-        return self.data["players"].values()
+    def get_players(self, sort_key=None):
+        p = self.data["players"].values()
+        return sorted(p, key=sort_key)
 
     def get_history(self):
         return self.data["history"]

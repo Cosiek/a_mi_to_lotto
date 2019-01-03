@@ -14,9 +14,10 @@ class MainViewHandler(tornado.web.RequestHandler):
         self.db = db
 
     def get(self):
+        players_sort_key = lambda x: x["balance"] * -1
         ctx = {
             "title": "Lotto",
-            "players": self.db.get_players(),
+            "players": self.db.get_players(players_sort_key),
             "history": self.db.get_history(),
         }
         self.render("main.html", **ctx)
