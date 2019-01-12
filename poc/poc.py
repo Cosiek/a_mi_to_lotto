@@ -28,14 +28,14 @@ def run():
         'cost': BET_COST
     }
     for player in data["players"]:
-        player["founds"] += 100
+        player["funds"] += 100
         # TODO: check if file processing is needed
-        # read player submitted fnction
+        # read player submitted function
         with open('submitted/' + player['file'], 'r') as f:
             player_func = f.read()
         
     	# prepare data for function
-        mapping['founds'] = player['founds']
+        mapping['funds'] = player['funds']
         output = player_func + template.substitute(mapping)
     
         # save file to execute
@@ -48,7 +48,7 @@ def run():
     
         if proc.returncode == 0:
             bets = json.loads(proc.stdout.strip())
-            player['founds'] -= BET_COST - len(bets)
+            player['funds'] -= BET_COST - len(bets)
             for bet in bets:
                 print(bet, len(numbers.intersection(bet)))
     

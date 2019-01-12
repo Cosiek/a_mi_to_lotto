@@ -34,11 +34,12 @@ class DBHandler():
         self._save()
 
     def get_new_player_dict(self):
+        import random
         return {
             "name": "",
             "file": "",
-            "founds": 0,
-            "balance": 0,
+            "funds": 0,
+            "balance": random.randint(-1000, 1100),
         }
 
     def get_players(self, sort_key=None):
@@ -54,3 +55,6 @@ class DBHandler():
     def _save(self):
         with open(self.db_filename, 'w') as f:
             json.dump(self.data, f)
+
+    def get_history(self):
+        return self.data['history']
