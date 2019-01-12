@@ -31,6 +31,8 @@ class DBHandler():
         player["file"] = filepath
         self.data['players'][username] = player
 
+        self._save()
+
     def get_new_player_dict(self):
         return {
             "name": "",
@@ -48,3 +50,7 @@ class DBHandler():
 
     def get_player(self, player_name):
         return self.data["players"].get(player_name)
+
+    def _save(self):
+        with open(self.db_filename, 'w') as f:
+            json.dump(self.data, f)
