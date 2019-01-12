@@ -4,8 +4,9 @@
 	</head>
 	<body>
 		<h2>Gracze</h2>
+		<a href="/add">Dodaj nowego gracza</a>
 		<ol>{% for player in players %}
-			<li>{{ player["name"] }} - {{ player["founds"] }} - {{ player["balance"] }}</li>
+			<li><a href="{{ player["name"] }}">{{ player["name"] }}</a> - {{ player["founds"] }} - {{ player["balance"] }}</li>
 		{% end %}</ol>
 		<h2>Historia</h2>
 		<ol>{% for event in history %}

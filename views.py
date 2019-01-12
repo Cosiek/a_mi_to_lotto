@@ -25,6 +25,8 @@ class MainViewHandler(tornado.web.RequestHandler):
 
 class BaseUserViewHandler(tornado.web.RequestHandler):
 
+    form_fields_names = ["username", "code"]
+
     def initialize(self, db):
         self.db = db
 
@@ -37,7 +39,7 @@ class BaseUserViewHandler(tornado.web.RequestHandler):
         }
 
     def get(self):
-        self.render("new_user.html", **self.ctx)
+        self.render("user.html", **self.ctx)
 
     def post(self):
         if self.validate():
@@ -46,11 +48,11 @@ class BaseUserViewHandler(tornado.web.RequestHandler):
             self.redirect(to)
         else:
             self.set_status(400)
-            self.render("new_user.html", **self.ctx)
+            self.render("user.html", **self.ctx)
 
     def validate(self):
         is_valid = True
-        for fieldname in ["username", "code"]:
+        for fieldname in self.form_fields_names:
             value = self.get_argument(fieldname)
             self.ctx[fieldname] = value
             validator_name = "validate_" + fieldname
@@ -88,7 +90,6 @@ class BaseUserViewHandler(tornado.web.RequestHandler):
         filename = js.save_file(
                 self.ctx["code"], self.ctx["username"])
         self.db.save_player(self.ctx["username"], filename)
-        print("saving", self.ctx)
 
 
 class NewUserViewHandler(BaseUserViewHandler):
@@ -96,22 +97,35 @@ class NewUserViewHandler(BaseUserViewHandler):
     def initialize(self, db):
         super().initialize(db)
         self.ctx["title"] = "Nowy gracz"
+        self.ctx["is_editing"] = False
 
 
 class UserViewHandler(BaseUserViewHandler):
 
+    form_fields_names = ["code"]
+
     def initialize(self, db):
         super().initialize(db)
         self.ctx["title"] = "Gracz"
+        self.ctx["is_editing"] = True
 
     def get(self, username):
-        user = self.db.get_player(username)
+        user = self.get_user_or_404(username)
         if user is None:
-            self.set_status(404)
             return
         self.ctx["username"] = user["name"]
         self.ctx["code"] = js.get_user_code(user["file"])
         super().get()
 
     def post(self, username):
+        user = self.get_user_or_404(username)
+        if user is None:
+            return
+        self.ctx["username"] = user["name"]
         super().post()
+
+    def get_user_or_404(self, username):
+        user = self.db.get_player(username)
+        if user is None:
+            self.set_status(404)
+        return user
