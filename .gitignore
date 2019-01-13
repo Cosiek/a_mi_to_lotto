@@ -1,6 +1,10 @@
-
+﻿
 # python pre-compiled
 *.pyc
 
-# submitted files
+# submitted and execution files
 submitted/
+ready/
+
+# database
+db.json
