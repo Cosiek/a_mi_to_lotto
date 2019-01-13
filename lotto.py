@@ -81,13 +81,9 @@ def run(db):
                                              mapping)
 
         # execute a file in js
-        proc = js.execute(filename)
+        bets = js.execute(filename)
 
-        if proc.returncode != 0:
-            # not sure what else to do
-            continue
-
-        bets = validate_bets(proc.stdout.strip())
+        bets = validate_bets(bets)
 
         if not bets:
             # not sure what else to do

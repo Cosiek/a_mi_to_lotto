@@ -12,10 +12,14 @@ JS_TEMPLATE_PTH = 'templates/js_template.js'
 
 
 def is_valid(code):
-    proc = subprocess.run(
-                          ['js', '-e', code], 
-                          stdout=subprocess.PIPE, 
-                          universal_newlines=True)
+    try:
+        proc = subprocess.run(['js', '-e', code],
+                              stdout=subprocess.PIPE,
+                              universal_newlines=True,
+                              timeout=1)
+    except subprocess.TimeoutExpired:
+        return False
+
     return (proc.returncode == 0 and
             not proc.stdout.strip())
 
@@ -61,6 +65,17 @@ def save_execution_js_file(player, mapping):
 
 
 def execute(filename):
-    return subprocess.run(['js', filename],
-                          stdout=subprocess.PIPE,
-                          universal_newlines=True)
+    try:
+        proc = subprocess.run(['js', filename],
+                              stdout=subprocess.PIPE,
+                              universal_newlines=True,
+                              timeout=2)
+    except subprocess.TimeoutExpired:
+        print("Subproccess exceeded timeout - file:", filename)
+        return ''
+
+    if proc.returncode != 0:
+        print("Subproccess filed - file:", filename)
+        return ''
+
+    return proc.stdout.strip()
