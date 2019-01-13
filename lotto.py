@@ -107,7 +107,5 @@ def run(db):
         "numbers": list(numbers),
         "winnings": his_hlp,
     }
-    print(players)
-    print(history)
 
-    # db.update(players, history)
+    db.update(players, history)

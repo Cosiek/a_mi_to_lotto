@@ -39,11 +39,12 @@ class DBHandler():
             "name": "",
             "file": "",
             "funds": 0,
-            "balance": random.randint(-1000, 1100),
+            "balance": 0,  # random.randint(-1000, 1100),
         }
 
     def get_players(self, sort_key=None):
         p = self.data["players"].values()
+        print(p)
         return sorted(p, key=sort_key)
 
     def get_history(self):
@@ -58,3 +59,13 @@ class DBHandler():
 
     def get_history(self):
         return self.data['history']
+
+    def update(self, players, history):
+        self.data['history'].append(history)
+
+        for player in players:
+            op = self.data['players'][player['name']]
+            op['funds'] = player['funds']
+            op['balance'] = player['balance']
+
+        self._save()
