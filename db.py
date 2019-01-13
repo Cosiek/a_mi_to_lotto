@@ -44,7 +44,7 @@ class DBHandler():
 
     def get_players(self, sort_key=None):
         p = self.data["players"].values()
-        return sorted(p, key=sort_key)
+        return p if sort_key is None else sorted(p, key=sort_key)
 
     def get_history(self):
         return self.data["history"]
