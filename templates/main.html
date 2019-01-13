@@ -6,11 +6,20 @@
 		<h2>Gracze</h2>
 		<a href="/add">Dodaj nowego gracza</a>
 		<ol>{% for player in players %}
-			<li><a href="{{ player["name"] }}">{{ player["name"] }}</a> - {{ player["founds"] }} - {{ player["balance"] }}</li>
+			<li><a href="{{ player["name"] }}">{{ player["name"] }}</a> - {{ player["funds"] }} - {{ player["balance"] }}</li>
 		{% end %}</ol>
 		<h2>Historia</h2>
-		<ol>{% for event in history %}
-			<li>{{ event }}</li>
+		<ol reversed>{% for event in reversed(history) %}
+			<li>
+				{{ event['numbers'] }}
+				{% if event['winnings'] %}
+				<ol>
+				{% for win in event['winnings'] %}
+					<li>{{ win[0] }} - {{ win[2] }}zł - numery: {{ win[1] }}</li>
+				{% end %}
+				</ol>
+				{% end %}
+			</li>
 		{% end %}</ol>
 	</body>
 </html>
