@@ -8,20 +8,15 @@ import tornado.ioloop
 import tornado.web
 from tornado.web import url
 
-import views
 import db
+import lotto
+import views
 
 
 CURRENT_DIR = dirname(realpath(__file__))
 
 
-def run_periodic():
-    print("Jup!")
-
-
-def make_app():
-    # init DB
-    database = db.DBHandler()
+def make_app(database):
     init = {
         "db": database
     }
@@ -37,8 +32,12 @@ def make_app():
 
 
 if __name__ == "__main__":
+    # init DB
+    database = db.DBHandler()
+
+    # prepare application
     port = 8888
-    app = make_app()
+    app = make_app(database)
     app.listen(port)
     
     # get server IP
@@ -47,12 +46,11 @@ if __name__ == "__main__":
     print(s.getsockname()[0] + ":" + str(port))
     s.close()
     
-    # get loop
-    loop = tornado.ioloop.IOLoop.current()
-    
     # schedule tasks
-    pc = tornado.ioloop.PeriodicCallback(run_periodic, 5000)
+    task = lambda: lotto.run(database)
+    pc = tornado.ioloop.PeriodicCallback(task, 5000)
     pc.start()
 
     # start server
+    loop = tornado.ioloop.IOLoop.current()
     loop.start()
