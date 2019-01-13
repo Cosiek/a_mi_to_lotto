@@ -3,4 +3,4 @@ function randInt(){
     return Math.floor(Math.random() * (49 - 1)) + 1;
 }
 
-console.log(lotto(${funds}, ${cost}, ${history}))
+console.log(JSON.stringify(lotto(${funds}, ${cost}, ${history})))
