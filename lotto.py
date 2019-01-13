@@ -85,8 +85,9 @@ def run(db):
 
         bets = validate_bets(bets)
 
-        if not bets:
+        if bets is False:
             # not sure what else to do
+            player["funds"] -= 100
             continue
 
         funds = player['funds']
