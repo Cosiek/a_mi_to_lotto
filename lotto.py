@@ -10,7 +10,7 @@ import js
 
 # lotto logic
 
-BET_COST = 7
+BET_COST = 3
 
 
 def get_winning_numbers():
