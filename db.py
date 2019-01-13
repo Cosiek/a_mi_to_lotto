@@ -44,7 +44,6 @@ class DBHandler():
 
     def get_players(self, sort_key=None):
         p = self.data["players"].values()
-        print(p)
         return sorted(p, key=sort_key)
 
     def get_history(self):

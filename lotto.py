@@ -93,8 +93,12 @@ def run(db):
             # not sure what else to do
             continue
 
+        funds = player['funds']
         for bet in bets:
             # valdate number of bets
+            if funds - BET_COST < 0:
+                break
+
             money = worth(bet, numbers)
             player['funds'] += money - BET_COST
             player['balance'] += money - BET_COST
