@@ -11,6 +11,7 @@ import js
 # lotto logic
 
 BET_COST = 3
+EARNINGS = 30
 
 
 def get_winning_numbers():
@@ -75,7 +76,7 @@ def run(db):
         players.append(player)
 
         # player earned some money
-        player["funds"] += 100
+        player["funds"] += EARNINGS
 
         filename = js.save_execution_js_file(player, 
                                              mapping)
@@ -87,7 +88,7 @@ def run(db):
 
         if bets is False:
             # not sure what else to do
-            player["funds"] -= 100
+            player["funds"] -= EARNINGS
             continue
 
         funds = player['funds']
