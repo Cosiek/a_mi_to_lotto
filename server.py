@@ -16,7 +16,7 @@ import views
 CURRENT_DIR = dirname(realpath(__file__))
 
 
-def make_app(database):
+def make_app(database, pc):
     init = {
         "db": database
     }
@@ -24,6 +24,7 @@ def make_app(database):
     return tornado.web.Application([
         url(r"/", views.MainViewHandler, init),
         url(r"/add", views.NewUserViewHandler, init),
+        url(r"/switch", views.SwitchViewHandler, {"pc": pc}),
         url(r"/(\w+)", views.UserViewHandler, init, name="user"),
         ],
         template_path=join(CURRENT_DIR, "templates"),
@@ -35,9 +36,14 @@ if __name__ == "__main__":
     # init DB
     database = db.DBHandler()
 
+    # schedule tasks
+    task = lambda: lotto.run(database)
+    pc = tornado.ioloop.PeriodicCallback(task, 5000)
+    pc.start()
+
     # prepare application
     port = 8888
-    app = make_app(database)
+    app = make_app(database, pc)
     app.listen(port)
     
     # get server IP
@@ -45,11 +51,6 @@ if __name__ == "__main__":
     s.connect(("8.8.8.8", 80))
     print(s.getsockname()[0] + ":" + str(port))
     s.close()
-    
-    # schedule tasks
-    task = lambda: lotto.run(database)
-    pc = tornado.ioloop.PeriodicCallback(task, 5000)
-    pc.start()
 
     # start server
     loop = tornado.ioloop.IOLoop.current()

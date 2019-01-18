@@ -129,3 +129,17 @@ class UserViewHandler(BaseUserViewHandler):
         if user is None:
             self.set_status(404)
         return user
+
+
+class SwitchViewHandler(tornado.web.RequestHandler):
+
+    def initialize(self, pc):
+        self.pc = pc
+
+    def get(self):
+        if self.pc.is_running():
+            self.pc.stop()
+            self.write("Periodic callback is stopped")
+        else:
+            self.pc.start()
+            self.write("Periodic callback is running")
